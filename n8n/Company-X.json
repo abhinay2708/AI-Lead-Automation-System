@@ -1,0 +1,124 @@
+{
+  "name": "Company-X",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1BXtMHDssOE_Szd73rY2ian8fpTO8SM5nHE3IsWiEnLs",
+          "mode": "list",
+          "cachedResultName": "Company-X",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BXtMHDssOE_Szd73rY2ian8fpTO8SM5nHE3IsWiEnLs/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BXtMHDssOE_Szd73rY2ian8fpTO8SM5nHE3IsWiEnLs/edit#gid=0"
+        },
+        "event": "rowAdded",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        -784,
+        -208
+      ],
+      "id": "42586149-add4-407f-89f9-bcffb3cd4d10",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "CkbKJwfga6UWKLQj",
+          "name": "Google Sheets Trigger account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal:8002/lead",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"name\": \"{{ $json.name }}\",\n  \"email\": \"{{ $json.email }}\",\n  \"phone\": \"{{ $json.phone }}\",\n  \"source\": \"{{ $json.source }}\",\n  \"message\": \"{{ $json.message }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -560,
+        -208
+      ],
+      "id": "7d4e0207-0e79-43f0-a72d-1bf93560f9a4",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "chatId": "=6701561389",
+        "text": "=🔥 New Lead Received\n\nName: {{$node[\"Google Sheets Trigger\"].json[\"name\"]}}\n\nEmail: {{$node[\"Google Sheets Trigger\"].json[\"email\"]}}\n\nSource: {{$node[\"Google Sheets Trigger\"].json[\"source\"]}}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -336,
+        -208
+      ],
+      "id": "1324117f-80a7-40f3-a6cd-4b4f7c8ca36b",
+      "name": "Send a text message",
+      "webhookId": "2e596cb8-ad90-4921-8cb4-cfdcfd2e3acb",
+      "credentials": {
+        "telegramApi": {
+          "id": "QaDptYtV8h0Y2Oz0",
+          "name": "Telegram account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "e99fdffc-a08f-437b-b1d5-36f6b633b881",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f20f6b2c151ca2a878e46660d129caad6d77df204cb92591d99823af32639ddc"
+  },
+  "id": "e8tr6ah93ucZJs4a",
+  "tags": []
+}
