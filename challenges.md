@@ -3,6 +3,7 @@
 
 2. When i start building the n8n workflow, that time in the httprequest node i select teh post method and write the url, but it is not working and i get error everytime, because i used the n8n localy using docker, so i caahnged the url to http://host.docker.internal:8002/lead, then it work on my n8n and get the output.
 
+3. I faced memory full issue, means out of memory, that's why i am not getting proper answer from ollama.
 
-
+4. After some classification i got one more issue that, it unable to call the model from ollama, it directly go to the else part. So that time i identify the error and then i update teh system prompt, and also add a small change in the code , in the payload sectioon i add a format section to JSON. It will tell the system to give a answer in JOSN format.
 ---

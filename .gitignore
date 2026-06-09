@@ -12,7 +12,7 @@ ENV/
 
 # SQLite Database
 
-*.db
+
 *.sqlite3
 
 # Environment Variables
